@@ -1,6 +1,7 @@
 package com.example.umcmatchingcenter.service.matchingService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Project;
@@ -24,9 +25,14 @@ public class MatchingQueryServiceImpl implements MatchingQueryService {
     private final MatchingRepository matchingRepository;
 
     @Override
-    public Optional<Project> findProject(Long id) {
-        return matchingRepository.findById(id);
+    public Project findProject(Long id) {
+        Optional<Project> project = matchingRepository.findById(id);
+        if (project.isEmpty()) {
+            throw new ProjectHandler(ErrorStatus.PROJECT_NOT_EXIST);
+        }
+        return project.get();
     }
+
 
     @Override
     public List<Project> getProjectList(Branch branch, ProjectStatus status, Integer page) {

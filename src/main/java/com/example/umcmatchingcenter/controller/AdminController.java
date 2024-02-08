@@ -9,6 +9,8 @@ import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerI
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
+import com.example.umcmatchingcenter.service.AdminService;
+import com.example.umcmatchingcenter.service.branchService.BranchQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import io.swagger.annotations.Api;
@@ -42,8 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "관리자 API")
 public class AdminController {
 
-    private final MemberCommandService memberCommandService;
-    private final MemberQueryService memberQueryService;
+    private final AdminService adminService;
 
     @Operation(summary = "챌린저 관리용 조회 API")
     @ApiResponses({
@@ -58,7 +59,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger")
     public ApiResponse<List<MemberResponseDTO.ChallengerInfoDTO>> challengerList(@RequestParam("matchingStatus") MemberMatchingStatus memberMatchingStatus, @RequestParam("page") int page){
-        List<ChallengerInfoDTO> challengerList = memberQueryService.getChallengerList(memberMatchingStatus, page - 1 );
+        List<ChallengerInfoDTO> challengerList = adminService.getChallengerList(memberMatchingStatus, page - 1 );
 
         return ApiResponse.onSuccess(challengerList);
     }
@@ -76,7 +77,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger/{name}")
     public ApiResponse<List<ApplyTeamDTO>> matchRoundList(@PathVariable(name = "name") String name){
-        List<ApplyTeamDTO> matchingRoundDTOList = memberQueryService.getMatcingRoundList(name);
+        List<ApplyTeamDTO> matchingRoundDTOList = adminService.getMatcingRoundList(name);
 
         return ApiResponse.onSuccess(matchingRoundDTOList);
     }
@@ -94,7 +95,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/challenger/depart/{name}")
     public ApiResponse<MemberResponseDTO.DepartResultDTO> memberDepart(@PathVariable(name = "name") String name){
-        MemberResponseDTO.DepartResultDTO departResultDTO = memberCommandService.memberDepart(name);
+        MemberResponseDTO.DepartResultDTO departResultDTO = adminService.departingMember(name);
 
         return ApiResponse.onSuccess(departResultDTO);
     }
@@ -111,7 +112,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger/signup-requests")
     public ApiResponse<List<SignUpRequestMemberDTO>> requestMemberList(@RequestParam("page") int page){
-        List<SignUpRequestMemberDTO> signUpRequestDTOList = memberQueryService.getSignUpRequestList(page - 1);
+        List<SignUpRequestMemberDTO> signUpRequestDTOList = adminService.getSignUpRequestList(page - 1);
 
         return ApiResponse.onSuccess(signUpRequestDTOList);
     }
@@ -130,7 +131,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/challenger/signup-requests/{id}/accept")
     public ApiResponse<AcceptResultDTO> memberAccept(@PathVariable("id")Long id){
-        AcceptResultDTO acceptResultDTO = memberCommandService.requestMemberAccept(id);
+        AcceptResultDTO acceptResultDTO = adminService.requestMemberAccept(id);
 
         return ApiResponse.onSuccess(acceptResultDTO);
     }
@@ -150,7 +151,7 @@ public class AdminController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/challenger/signup-requests/{id}/reject")
     public ApiResponse<RejectResultDTO> memberReject(@PathVariable("id") Long id){
-        RejectResultDTO rejectResultDTO = memberCommandService.requestMemberReject(id);
+        RejectResultDTO rejectResultDTO = adminService.requestMemberReject(id);
 
         return ApiResponse.onSuccess(rejectResultDTO);
     }
@@ -168,7 +169,23 @@ public class AdminController {
                                             @RequestPart(required = false) MultipartFile image,
                                             Principal principal) {
 
-        memberCommandService.updateAdminInfo(updateAdminInfoDTO, image, principal.getName());
+        adminService.updateAdminInfo(updateAdminInfoDTO, image, principal.getName());
         return ApiResponse.onSuccess("내 정보 수정에 성공했습니다.");
+    }
+
+    @Operation(summary = "랜덤매칭 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 없습니다.", content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4005", description = "사진 업로드에 실패했습니다.", content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "generation", description = "랜덤 매칭 돌리는 기수 번호입니다.")
+    })
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/match/random/{generation}")
+    public ApiResponse<String> randomMatching(@PathVariable(name = "generation")int generation){
+        adminService.startRandomMatching(generation);
+        return ApiResponse.onSuccess("랜덤매칭 완료");
     }
 }

@@ -1,8 +1,6 @@
 package com.example.umcmatchingcenter.service;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
-import com.example.umcmatchingcenter.apiPayload.exception.GeneralException;
-import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.UniversityHandler;
 import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.repository.UniversityRepository;

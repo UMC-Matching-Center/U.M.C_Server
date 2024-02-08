@@ -1,14 +1,11 @@
 package com.example.umcmatchingcenter.service.noticeService;
 
-import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
-import com.example.umcmatchingcenter.apiPayload.exception.handler.NoticeHandler;
 import com.example.umcmatchingcenter.converter.NoticeConverter;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Notice;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.dto.noticeDTO.NoticeRequestDTO;
-import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.NoticeRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
@@ -20,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

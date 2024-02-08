@@ -1,14 +1,12 @@
 package com.example.umcmatchingcenter.service.noticeService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
-import com.example.umcmatchingcenter.apiPayload.exception.handler.AlarmHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.NoticeHandler;
 import com.example.umcmatchingcenter.converter.NoticeConverter;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Notice;
 import com.example.umcmatchingcenter.dto.noticeDTO.NoticeResponseDTO;
-import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.NoticeRepository;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;

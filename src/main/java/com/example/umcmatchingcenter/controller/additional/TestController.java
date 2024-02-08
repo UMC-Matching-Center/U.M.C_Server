@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.controller;
+package com.example.umcmatchingcenter.controller.additional;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.TempConverter;

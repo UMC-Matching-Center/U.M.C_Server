@@ -5,7 +5,6 @@ import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.code.status.SuccessStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
-import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
@@ -14,20 +13,14 @@ import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO.UpdateAdminInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO.UpdateMyInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.UniversityRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
-import com.example.umcmatchingcenter.service.BranchQueryService;
 import com.example.umcmatchingcenter.service.RedisService;
-import com.example.umcmatchingcenter.service.UniversityQueryService;
-import com.example.umcmatchingcenter.service.UuidService;
 import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -59,9 +52,7 @@ public class MemberCommandService {
     private final AlarmCommandService alarmCommandService;
     private final RedisService redisService;
     private final S3UploadService s3UploadService;
-    private final UuidService uuidService;
-    private final BranchQueryService branchQueryService;
-    private final UniversityQueryService universityQueryService;
+
 
 
     public Member join(MemberRequestDTO.JoinDTO request){
@@ -122,22 +113,6 @@ public class MemberCommandService {
         return MemberConverter.toDepartResultDTO(memberRepository.save(member));
     }
 
-    public AcceptResultDTO requestMemberAccept(Long id) {
-        Member member = memberQueryService.findMember(id);
-        member.accept();
-        memberRepository.save(member);
-
-        return MemberConverter.toAcceptResultDTO(member);
-    }
-
-    public RejectResultDTO requestMemberReject(Long id) {
-        Member member = memberQueryService.findMember(id);
-        member.reject();
-        memberRepository.save(member);
-
-        return MemberConverter.toRejectResultDTO(member);
-    }
-
     public ApiResponse duplicationMemberName(String memberName){
         if(memberRepository.findByMemberName(memberName).isPresent()){
             throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
@@ -170,19 +145,4 @@ public class MemberCommandService {
         memberRepository.save(member);
     }
 
-    public void updateAdminInfo(UpdateAdminInfoDTO updateAdminInfoDTO, MultipartFile image, String name) {
-        Member member = memberQueryService.findMemberByName(name);
-        String profileImage = member.getProfileImage();
-        if (image != null) {
-            profileImage = s3UploadService.uploadFile(image);
-        }
-        member.updateAdminInfo(updateAdminInfoDTO.getPhoneNumber(), profileImage);
-
-        University university = member.getUniversity();
-        Branch newBranch = branchQueryService.findBranchByName(updateAdminInfoDTO.getBranch());
-        university.updateBranch(newBranch);
-        universityRepository.save(university);
-
-        memberRepository.save(member);
-    }
 }

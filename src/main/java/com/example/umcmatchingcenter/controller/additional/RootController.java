@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.controller;
+package com.example.umcmatchingcenter.controller.additional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

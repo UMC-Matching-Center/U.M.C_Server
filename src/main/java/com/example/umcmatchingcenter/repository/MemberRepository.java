@@ -3,6 +3,7 @@ package com.example.umcmatchingcenter.repository;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
@@ -26,4 +27,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Page<Member> findAllByMemberStatus(MemberStatus memberStatus, PageRequest pageRequest);
 
     List<Member> findByUniversity_Branch(Branch branch);
+
+    List<Member> findByUniversityInAndMatchingStatusInAndPartAndMemberStatus(List<University> universities, List<MemberMatchingStatus> matchingStatuses, MemberPart part, MemberStatus memberStatus);
 }
