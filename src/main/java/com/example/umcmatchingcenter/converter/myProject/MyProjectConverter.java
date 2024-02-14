@@ -1,6 +1,7 @@
 package com.example.umcmatchingcenter.converter.myProject;
 
 import com.example.umcmatchingcenter.domain.LandingPage;
+import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.dto.ProjectDTO.*;
 
 import java.util.List;
@@ -20,11 +21,12 @@ public class MyProjectConverter {
                 .build();
     }
 
-    public static LandingPage toLandingPage(MyProjectRequestDTO.AddLandingPageRequestDTO request){
+    public static LandingPage toLandingPage(MyProjectRequestDTO.AddLandingPageRequestDTO request, Project project){
         return LandingPage.builder()
                 .title(request.getTitle())
                 .introduction(request.getIntroduction())
                 .body(request.getBody())
+                .project(project)
                 .build();
     }
 

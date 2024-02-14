@@ -164,7 +164,8 @@ public class MyProjectService {
     }
 
     public LandingPage AddLandingPage(MyProjectRequestDTO.AddLandingPageRequestDTO request){
-        LandingPage landingPage = MyProjectConverter.toLandingPage(request);
+        Project project = projectQueryService.getProject();
+        LandingPage landingPage = MyProjectConverter.toLandingPage(request, project);
         landingPageRepository.save(landingPage);
         setProfileImage(request.getProfileImageId(), landingPage);
         mappingLandingPageAndImage(request.getImageIdList(), landingPage);
