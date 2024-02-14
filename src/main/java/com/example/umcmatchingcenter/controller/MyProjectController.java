@@ -1,6 +1,7 @@
 package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
+import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
 import com.example.umcmatchingcenter.service.myProjectService.MyProjectService;
 import io.swagger.annotations.ApiParam;
@@ -51,5 +52,25 @@ public class MyProjectController {
     @ApiParam(value = "유저 아이디")
     public ApiResponse<String> fail(@PathVariable Long memberId) {
         return ApiResponse.onSuccess(myProjectService.fail(memberId));
+    }
+
+    @PostMapping("/landingpage")
+    @Operation(summary = "랜딩 페이지 작성 api")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+
+    })
+    public ApiResponse<String> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
+        return null;
+    }
+
+    @PatchMapping("/landingpage")
+    @Operation(summary = "랜딩 페이지 수정 api")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+
+    })
+    public ApiResponse<String> updateLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
+        return null;
     }
 }
