@@ -29,6 +29,10 @@ public class LandingPage extends BaseEntity {
 
     private String body;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectId")
+    private Project project;
+
     @OneToMany(mappedBy = "project")
     private List<Image> images;
 
