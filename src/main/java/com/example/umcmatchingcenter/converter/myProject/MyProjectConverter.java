@@ -27,4 +27,12 @@ public class MyProjectConverter {
                 .body(request.getBody())
                 .build();
     }
+
+    public static MyProjectResponseDTO.AddLandingPageResponseDTO toAddLandingPageResponseDTO(LandingPage landingPage){
+        return MyProjectResponseDTO.AddLandingPageResponseDTO.builder()
+                .Id(landingPage.getId())
+                .title(landingPage.getTitle())
+                .createdAt(landingPage.getCreatedAt())
+                .build();
+    }
 }

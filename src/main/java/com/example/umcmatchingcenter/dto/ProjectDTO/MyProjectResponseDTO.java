@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,5 +18,15 @@ public class MyProjectResponseDTO {
     private List<PartMatchingResponseDTO> partMatchingDTO;
     private double competitionRate;
     private List<ApplicantInfoResponseDTO> applicantInfoList;
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddLandingPageResponseDTO {
+        private Long Id;
+        private String title;
+        private LocalDateTime createdAt;
+    }
 
 }
