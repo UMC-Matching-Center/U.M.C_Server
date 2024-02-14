@@ -62,18 +62,19 @@ public class MyProjectController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
 
     })
-    public ApiResponse<MyProjectResponseDTO.AddLandingPageResponseDTO> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
+    public ApiResponse<MyProjectResponseDTO.LandingPageResponseDTO> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
         LandingPage landingPage = myProjectService.AddLandingPage(request);
         return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
     }
 
-    @PatchMapping("/landingpage")
+    @PatchMapping("/landingpage/{landingPageId}")
     @Operation(summary = "랜딩 페이지 수정 api")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
 
     })
-    public ApiResponse<String> updateLandingPage(@RequestBody MyProjectRequestDTO.UpdateLandingPageRequestDTO request) {
-        return null;
+    public ApiResponse<MyProjectResponseDTO.LandingPageResponseDTO> updateLandingPage(@PathVariable(name = "landingPageId") Long landingPageId,@RequestBody MyProjectRequestDTO.UpdateLandingPageRequestDTO request) {
+        LandingPage landingPage = myProjectService.UpdateLandingPage(request, landingPageId);
+        return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
     }
 }
