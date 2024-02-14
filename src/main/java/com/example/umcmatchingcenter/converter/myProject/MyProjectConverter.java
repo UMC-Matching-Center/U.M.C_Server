@@ -28,8 +28,8 @@ public class MyProjectConverter {
                 .build();
     }
 
-    public static MyProjectResponseDTO.AddLandingPageResponseDTO toAddLandingPageResponseDTO(LandingPage landingPage){
-        return MyProjectResponseDTO.AddLandingPageResponseDTO.builder()
+    public static MyProjectResponseDTO.LandingPageResponseDTO toAddLandingPageResponseDTO(LandingPage landingPage){
+        return MyProjectResponseDTO.LandingPageResponseDTO.builder()
                 .Id(landingPage.getId())
                 .title(landingPage.getTitle())
                 .createdAt(landingPage.getCreatedAt())

@@ -23,7 +23,7 @@ public class MyProjectResponseDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class AddLandingPageResponseDTO {
+    public static class LandingPageResponseDTO {
         private Long Id;
         private String title;
         private LocalDateTime createdAt;
