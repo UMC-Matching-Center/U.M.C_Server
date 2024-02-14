@@ -28,6 +28,10 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "projectId")
     private Project project;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "landingPageId")
+    private LandingPage landingPage;
+
     @Column(columnDefinition = "boolean default false")
     private boolean isProfile;
 
