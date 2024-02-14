@@ -41,5 +41,7 @@ public class Image extends BaseEntity {
 
     public void setProfile(){this.isProfile = true;}
 
+    public void setLandingPage(LandingPage landingPage){this.landingPage = landingPage;}
+
 
 }

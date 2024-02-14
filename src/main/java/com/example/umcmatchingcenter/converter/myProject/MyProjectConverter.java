@@ -20,7 +20,7 @@ public class MyProjectConverter {
                 .build();
     }
 
-    public LandingPage toLandingPage(MyProjectRequestDTO.AddLandingPageRequestDTO request){
+    public static LandingPage toLandingPage(MyProjectRequestDTO.AddLandingPageRequestDTO request){
         return LandingPage.builder()
                 .title(request.getTitle())
                 .introduction(request.getIntroduction())
