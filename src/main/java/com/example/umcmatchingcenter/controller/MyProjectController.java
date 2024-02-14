@@ -1,6 +1,8 @@
 package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
+import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
+import com.example.umcmatchingcenter.domain.LandingPage;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
 import com.example.umcmatchingcenter.service.myProjectService.MyProjectService;
@@ -60,8 +62,9 @@ public class MyProjectController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
 
     })
-    public ApiResponse<String> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
-        return null;
+    public ApiResponse<MyProjectResponseDTO.AddLandingPageResponseDTO> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
+        LandingPage landingPage = myProjectService.AddLandingPage(request);
+        return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
     }
 
     @PatchMapping("/landingpage")
